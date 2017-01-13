@@ -9,16 +9,13 @@
 		<script src="https://code.jquery.com/jquery.js"></script>
 	</head>
 	<body>
-		
 		<div class="container">
-			
-			<div class="row">
+			<div class="row">	<!-- Row 1 Banner Image -->
 				<div class="col-md-12">
 					<img id="banner" src="assets/img/download.jpg">
 				</div>
-			</div>
-			
-			<div class="row">
+			</div>	<!-- Row 1 Banner Image -->
+			<div class="row">	<!-- Row 2 Nav Bar -->
 				<div class="col-md-12">
 					<nav class="navbar navbar-inverse">
 						<div class="container-fluid">
@@ -36,45 +33,26 @@
 								<li class="active"><a href="#">Home<span class="sr-only">(current)</span></a></li>
 								<li><a href="#">Saved</a></li>
 							</ul>
-							<button type="submit" class="btn btn-warning btn-lg">Scrape New</button>
+							<button id="scraper" class="btn btn-warning btn-lg">Scrape New</button>
 						</div>
 						</div>
 					</nav>
 				</div>
-			</div>
-
-			<div class="row" id="articles">
+			</div>	<!-- Row 2 Nav Bar -->
+			<div class="row" id="empty">	<!-- Row 3 Placeholder -->
 				<div class="col-md-12">
 					<div class="panel panel-warning">
 						<div class="panel-heading">
-							<h3 class="panel-title" id="empty">Sorry, no new articles to show.</h3>
+							<h3 class="panel-title">Sorry, no new articles to show.</h3>
 						</div>
 					</div>
 				</div>
-			</div>
-
-		</div>
-
-
-		<div class="container">
-			
-			<div class="row">
-				<div class="col-md-12">	
-					{{#each article}}
-						<div class="panel panel-primary">
-							<div class="panel-heading" id="head">
-								{{this.title}}
-								<a href="" class="btn btn-info" id="save">Save</a>
-							</div>
-							<div class="panel-body">
-								{{this.description}}
-							</div>
-						</div>
-					{{/each}}	
+			</div>	<!-- Row 3 Placeholder -->
+			<div class="row">	<!-- Row 4 Articles -->
+				<div class="col-md-12" id="showArticle">	
 				</div>
-			</div>
-			
-		</div>	
-
+			</div>	<!-- Row 4 Articles -->
+		</div>
+	<script src="app.js"></script>
 	</body>
 </html>

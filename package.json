@@ -1,10 +1,11 @@
 {
   "name": "newsscraper",
   "version": "1.0.0",
-  "description": "mongo and cheerio app",
+  "description": "weird news",
   "main": "server.js",
   "scripts": {
-    "test": "nodemon server.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -20,8 +21,8 @@
     "body-parser": "^1.15.2",
     "cheerio": "^0.22.0",
     "express": "^4.14.0",
-    "express-handlebars": "^3.0.0",
     "mongoose": "^4.7.6",
+    "morgan": "^1.7.0",
     "request": "^2.79.0"
   }
 }

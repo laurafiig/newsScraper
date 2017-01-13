@@ -1,29 +1,32 @@
+/* Showing Mongoose's "Populated" Method (18.3.8)
+ * INSTRUCTOR ONLY
+ * =============================================== */
 
 // Dependencies
 var express = require("express");
 var bodyParser = require("body-parser");
+var logger = require("morgan");
 var mongoose = require("mongoose");
-
-// Requiring our models
-var Comment = require("./models/Comment.js");
-var Article = require("./models/Article.js");
+// Requiring our Comment and Article models
+var Comment = require("./models/comment.js");
+var Article = require("./models/article.js");
 // Our scraping tools
 var request = require("request");
 var cheerio = require("cheerio");
+// Mongoose mpromise deprecated - use bluebird promises
+var Promise = require("bluebird");
+
+mongoose.Promise = Promise;
+
 
 // Initialize Express
 var app = express();
 
-// Usebody parser with our app
+// Use morgan and body parser with our app
+app.use(logger("dev"));
 app.use(bodyParser.urlencoded({
   extended: false
 }));
-
-// Set Handlebars.
-var exphbs = require("express-handlebars");
-
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
 
 // Make public a static dir
 app.use(express.static("public"));
@@ -48,44 +51,35 @@ db.once("open", function() {
 
 // Simple index route
 app.get("/", function(req, res) {
-  //res.send(test.html);
-  res.render("index");
+  res.send(index.html);
 });
 
-// A GET request to scrape the news website
+// A GET request to scrape the echojs website
 app.get("/scrape", function(req, res) {
-  // First, we grab the body of the html with request
+    // First, we grab the body of the html with request
   request("http://www.upi.com/Odd_News/", function(error, response, html) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(html);
     // Now, we grab every h2 within an article tag, and do the following:
-    $("div.upi-item").each(function(i, element) {
-
+    $("a").each(function(i, element) {
       // Save an empty result object
       var result = {};
-
       // Add the text and href of every link, and save them as properties of the result object
-      result.title = $(this).children("a").attr("title");
-      result.link = $(this).children("a").attr("href");
-      result.description = $(this).children("a").children(".desc").text()
-      
-
-
+      result.title = $(this).attr("title");
+      result.link = $(this).attr("href");
+      result.description = $(this).children(".desc").text()
       // Using our Article model, create a new entry
       // This effectively passes the result object to the entry (and the title and link)
       var entry = new Article(result);
-
       // Now, save that entry to the db
       entry.save(function(err, doc) {
         // Log any errors
         if (err) {
           console.log(err);
-          console.log("err")
         }
         // Or log the doc
         else {
           console.log(doc);
-          console.log("doc")
         }
       });
 
@@ -93,7 +87,6 @@ app.get("/scrape", function(req, res) {
   });
   // Tell the browser that we finished scraping the text
   res.send("Scrape Complete");
-  
 });
 
 // This will get the articles we scraped from the mongoDB
@@ -110,13 +103,13 @@ app.get("/articles", function(req, res) {
     }
   });
 });
-
+/*
 // Grab an article by it's ObjectId
 app.get("/articles/:id", function(req, res) {
   // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
   Article.findOne({ "_id": req.params.id })
-  // ..and populate all of the notes associated with it
-  .populate("note")
+  // ..and populate all of the comments associated with it
+  .populate("comment")
   // now, execute our query
   .exec(function(error, doc) {
     // Log any errors
@@ -131,21 +124,21 @@ app.get("/articles/:id", function(req, res) {
 });
 
 
-// Create a new note or replace an existing note
+// Create a new comment or replace an existing comment
 app.post("/articles/:id", function(req, res) {
-  // Create a new note and pass the req.body to the entry
-  var newNote = new Note(req.body);
+  // Create a new comment and pass the req.body to the entry
+  var newComment = new Comment(req.body);
 
-  // And save the new note the db
-  newNote.save(function(error, doc) {
+  // And save the new comment the db
+  newComment.save(function(error, doc) {
     // Log any errors
     if (error) {
       console.log(error);
     }
     // Otherwise
     else {
-      // Use the article id to find and update it's note
-      Article.findOneAndUpdate({ "_id": req.params.id }, { "note": doc._id })
+      // Use the article id to find and update it's comment
+      Article.findOneAndUpdate({ "_id": req.params.id }, { "comment": doc._id })
       // Execute the above query
       .exec(function(err, doc) {
         // Log any errors
@@ -160,7 +153,7 @@ app.post("/articles/:id", function(req, res) {
     }
   });
 });
-
+*/
 
 // Listen on port 3000
 app.listen(3000, function() {
