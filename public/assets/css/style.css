@@ -1,2 +1,13 @@
 
-#banner {width: 100%}
+/*sizes picture*/
+#banner {
+	width: 100%;
+}
+
+/*centers text*/
+#empty {
+	text-align: center;
+}
+
+#head {height: 60px}
+#save {float: right;}
