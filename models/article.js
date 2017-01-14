@@ -9,6 +9,7 @@ var Schema = mongoose.Schema;
 var ArticleSchema = new Schema({
   title: {
     type: String,
+
     required: true
   },
   link: {
@@ -30,3 +31,5 @@ var Article = mongoose.model("Article", ArticleSchema);
 
 // Export the model
 module.exports = Article;
+
+      

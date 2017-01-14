@@ -56,38 +56,37 @@ app.get("/", function(req, res) {
 
 // A GET request to scrape the echojs website
 app.get("/scrape", function(req, res) {
-    // First, we grab the body of the html with request
+  // First, we grab the body of the html with request
   request("http://www.upi.com/Odd_News/", function(error, response, html) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(html);
     // Now, we grab every h2 within an article tag, and do the following:
     $("a").each(function(i, element) {
-      // Save an empty result object
-      var result = {};
-      // Add the text and href of every link, and save them as properties of the result object
-      result.title = $(this).attr("title");
-      result.link = $(this).attr("href");
-      result.description = $(this).children(".desc").text()
-      // Using our Article model, create a new entry
-      // This effectively passes the result object to the entry (and the title and link)
-      var entry = new Article(result);
+    // Save an empty result object
+    var result = {};
+    // Add the text and href of every link, and save them as properties of the result object
+    result.title = $(this).attr("title");
+    result.link = $(this).attr("href");
+    result.description = $(this).children(".desc").text()
+    // Using our Article model, create a new entry
+    // This effectively passes the result object to the entry (and the title and link)
+    var entry = new Article(result);
       // Now, save that entry to the db
       entry.save(function(err, doc) {
-        // Log any errors
-        if (err) {
-          console.log(err);
-        }
-        // Or log the doc
-        else {
-          console.log(doc);
-        }
-      });
-
-    });
-  });
+      // Log any errors
+      if (err) {
+      console.log(err);
+      }
+      // Or log the doc
+      else {
+      console.log(doc);
+      }
+      });  // end save to db
+    });  // end each (data grab)
+  });  // end request
   // Tell the browser that we finished scraping the text
   res.send("Scrape Complete");
-});
+});  // end app.get
 
 // This will get the articles we scraped from the mongoDB
 app.get("/articles", function(req, res) {
