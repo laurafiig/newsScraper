@@ -10,7 +10,6 @@ var Schema = mongoose.Schema;
 var ArticleSchema = new Schema({
   title: {
     type: String,
-
     required: true, 
     unique: true
   },
@@ -22,11 +21,17 @@ var ArticleSchema = new Schema({
     type: String,
     required: true
   },  
+    saved: {
+    type: Boolean,
+    default: false,
+    required: true
+  },  
   note: {
     type: Schema.Types.ObjectId,
     ref: "Note"
   }
 });
+
 
 // Apply the uniqueValidator plugin to userSchema. 
 ArticleSchema.plugin(uniqueValidator);
