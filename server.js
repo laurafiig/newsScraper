@@ -1,6 +1,3 @@
-/* Showing Mongoose's "Populated" Method (18.3.8)
- * INSTRUCTOR ONLY
- * =============================================== */
 
 // Dependencies
 var express = require("express");
@@ -122,6 +119,6 @@ app.get("/saved", function(req, res) {
 });
 
 // Listen on port 3000
-app.listen(3000, function() {
-  console.log("App running on port 3000!");
+app.listen(process.env.PORT|| 3000, function() {
+ console.log("App running on port 3000!");
 });
