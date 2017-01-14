@@ -20,6 +20,7 @@ $("#scraper").on("click", function() {
     console.log(data);
     // Empty the placeholder
     $("#empty").empty();
+    $("#showArticle").empty();
     // Grab the articles as a json
     $.getJSON("/articles", function(data) {
     // For each one
